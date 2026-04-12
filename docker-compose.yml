@@ -1,0 +1,29 @@
+services:
+  api:
+    image: ghcr.io/saleor/saleor:latest
+    ports:
+      - '8000:8000'
+    environment:
+      - DATABASE_URL=postgresql://saleor:saleor@db:5432/saleor
+      - SECRET_KEY=change-me
+      - ALLOWED_HOSTS=*
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - db
+      - redis
+  dashboard:
+    image: ghcr.io/saleor/saleor-dashboard:latest
+    ports:
+      - '9000:80'
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: saleor
+      POSTGRES_USER: saleor
+      POSTGRES_PASSWORD: saleor
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  redis:
+    image: redis:7-alpine
+volumes:
+  db_data:
