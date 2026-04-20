@@ -102,7 +102,26 @@ flowchart LR
 
 </details>
 
-## App Development
+## Security
+
+### Required environment variables for production
+
+Before deploying to production, you **must** set the following environment variables to secure values:
+
+| Variable | Description | How to generate |
+|---|---|---|
+| `SECRET_KEY` | Django secret key — must be a long, random string | `python -c "import secrets; print(secrets.token_urlsafe(50))"` |
+| `POSTGRES_PASSWORD` | PostgreSQL database password | Use a strong random password manager-generated value |
+| `ALLOWED_HOSTS` | Comma-separated list of valid hostnames (Django) | Set to your actual domain(s), e.g. `api.example.com` |
+
+### Production warnings
+
+- **`SECRET_KEY`** — Never use the placeholder value from `.env.example` in production. A weak or guessable secret key undermines all of Django's security features.
+- **`ALLOWED_HOSTS`** — Never set to `*` in production. Wildcard allowed hosts bypass Django's HTTP Host header validation and enable host-header injection attacks.
+- **`POSTGRES_PASSWORD`** — Never use the default password. Exposed databases with default credentials are a common attack vector.
+- The `docker-compose.yml` file is designed for **local development only**. Use a secrets manager or your deployment platform's secret injection for production workloads.
+
+
 
 Saleor uses an app-based extension system. Custom apps go in `apps/`.
 

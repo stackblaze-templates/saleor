@@ -1,6 +1,13 @@
 .env
+.env.local
+.env.*.local
 *.log
 .DS_Store
 __pycache__/
 *.pyc
 .venv/
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
